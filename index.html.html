@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty API Score Hub – AICTE IDEA Lab | Mailam Engineering College</title>
+<meta name="description" content="Faculty API Score Calculator for UGC/AICTE CAS Promotion. Check your Journals, Patents, Projects, Books score instantly.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f8; --surface:#fff; --surface2:#f5f7fc;
+  --border:#dde2ef; --border2:#c4cce0;
+  --blue:#2563eb; --blue-lt:#eff4ff; --blue-mid:#c7d9ff; --blue-dk:#1d4ed8;
+  --green:#15803d; --green-lt:#f0fdf4; --green-mid:#bbf7d0; --green-dk:#14532d;
+  --amber:#b45309; --amber-lt:#fffbeb; --amber-mid:#fde68a; --amber-dk:#92400e;
+  --red:#dc2626; --red-lt:#fef2f2; --red-mid:#fecaca; --red-dk:#991b1b;
+  --violet:#6d28d9; --violet-lt:#f5f3ff; --violet-mid:#ddd6fe;
+  --teal:#0f766e; --teal-lt:#f0fdfa; --teal-mid:#99f6e4;
+  --ink:#1a2540; --ink2:#374461; --ink3:#64748b; --ink4:#94a3b8;
+  --sh1:0 1px 4px rgba(20,36,70,.07),0 1px 2px rgba(20,36,70,.04);
+  --sh2:0 4px 16px rgba(20,36,70,.1),0 2px 6px rgba(20,36,70,.06);
+  --sh3:0 12px 40px rgba(20,36,70,.14),0 4px 10px rgba(20,36,70,.08);
+  --r:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);min-height:100vh;font-size:14px;}
+
+/* ═══ GLOBAL NAV ═══ */
+.g-nav{
+  background:var(--surface);border-bottom:2px solid var(--border);
+  height:60px;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:500;box-shadow:var(--sh1);
+}
+.g-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.g-logo{
+  width:36px;height:36px;border-radius:9px;
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:12px;
+  box-shadow:0 2px 8px rgba(37,99,235,.3);
+}
+.g-brand-text .g-title{font-size:15px;font-weight:800;color:var(--ink);}
+.g-brand-text .g-sub{font-size:10px;color:var(--ink3);}
+.g-tabs{display:flex;gap:4px;}
+.g-tab{
+  padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;
+  cursor:pointer;border:none;background:transparent;color:var(--ink3);
+  transition:all .15s;
+}
+.g-tab:hover{background:var(--blue-lt);color:var(--blue);}
+.g-tab.active{background:var(--blue-lt);color:var(--blue);font-weight:700;border:1.5px solid var(--blue-mid);}
+.g-share-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--green-lt);border:1.5px solid var(--green-mid);
+  color:var(--green);font-size:12px;font-weight:700;
+  border-radius:8px;padding:7px 14px;cursor:pointer;
+  transition:all .15s;
+}
+.g-share-btn:hover{background:var(--green-mid);}
+
+/* ═══ PAGES ═══ */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ═══════════════════════════════════════════
+   PAGE 1 – LANDING
+═══════════════════════════════════════════ */
+.hero{
+  background:linear-gradient(135deg,#0f2460 0%,#1a3a8f 40%,#2563eb 80%,#3b82f6 100%);
+  padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(59,130,246,.3),transparent);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:100px;padding:6px 18px;font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.9);letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:22px;
+}
+.hero h1{
+  font-size:42px;font-weight:800;color:#fff;line-height:1.15;
+  margin-bottom:16px;max-width:700px;margin-left:auto;margin-right:auto;
+}
+.hero h1 span{color:#93c5fd;}
+.hero p{
+  font-size:16px;color:rgba(255,255,255,.75);max-width:560px;
+  margin:0 auto 32px;line-height:1.7;
+}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.hero-btn-primary{
+  background:#fff;color:var(--blue-dk);font-weight:800;font-size:15px;
+  border:none;border-radius:10px;padding:13px 28px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(0,0,0,.2);transition:all .15s;
+}
+.hero-btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,0,0,.25);}
+.hero-btn-sec{
+  background:rgba(255,255,255,.12);color:#fff;font-weight:700;font-size:15px;
+  border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 28px;
+  cursor:pointer;transition:all .15s;
+}
+.hero-btn-sec:hover{background:rgba(255,255,255,.2);}
+
+.hero-stats{
+  display:flex;gap:0;justify-content:center;margin-top:48px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;overflow:hidden;max-width:580px;margin-left:auto;margin-right:auto;
+}
+.hs-item{
+  flex:1;padding:16px 20px;text-align:center;
+  border-right:1px solid rgba(255,255,255,.1);
+}
+.hs-item:last-child{border-right:none;}
+.hs-val{font-size:26px;font-weight:800;color:#fff;}
+.hs-lbl{font-size:10px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+
+/* How to use steps */
+.how-section{padding:52px 24px;max-width:900px;margin:0 auto;}
+.how-section h2{font-size:26px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:8px;}
+.how-section .how-sub{font-size:14px;color:var(--ink3);text-align:center;margin-bottom:36px;}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+.step-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:14px;padding:22px 18px;text-align:center;
+  box-shadow:var(--sh1);transition:all .2s;
+}
+.step-card:hover{box-shadow:var(--sh2);transform:translateY(-2px);}
+.step-num{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--blue-dk));
+  color:#fff;font-weight:800;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;
+}
+.step-card h3{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.step-card p{font-size:12px;color:var(--ink3);line-height:1.6;}
+
+/* Share section */
+.share-section{
+  background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+  border:1.5px solid var(--green-mid);border-radius:16px;
+  padding:32px 28px;max-width:700px;margin:0 auto 52px;text-align:center;
+}
+.share-section h3{font-size:20px;font-weight:800;color:var(--green-dk);margin-bottom:8px;}
+.share-section p{font-size:13px;color:var(--green);margin-bottom:20px;line-height:1.6;}
+.share-url-box{
+  background:#fff;border:1.5px solid var(--green-mid);
+  border-radius:10px;padding:12px 16px;
+  font-size:13px;font-weight:600;color:var(--ink2);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:14px;word-break:break-all;
+}
+.copy-btn{
+  background:var(--green-lt);border:1.5px solid var(--green-mid);
+  color:var(--green);font-weight:700;font-size:12px;
+  border-radius:7px;padding:6px 14px;cursor:pointer;white-space:nowrap;
+  transition:all .15s;flex-shrink:0;
+}
+.copy-btn:hover{background:var(--green-mid);}
+.share-icons{display:flex;gap:10px;justify-content:center;}
+.share-icon-btn{
+  display:flex;align-items:center;gap:7px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;
+  cursor:pointer;color:var(--ink2);transition:all .15s;
+}
+.share-icon-btn:hover{background:var(--surface2);border-color:var(--border2);}
+
+/* Feature cards */
+.features{
+  padding:0 24px 52px;max-width:900px;margin:0 auto;
+}
+.features h2{font-size:22px;font-weight:800;color:var(--ink);margin-bottom:20px;text-align:center;}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+.feat-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;padding:18px;box-shadow:var(--sh1);
+  display:flex;gap:13px;
+}
+.feat-ico{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.feat-txt h4{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.feat-txt p{font-size:11px;color:var(--ink3);line-height:1.5;}
+
+/* ═══════════════════════════════════════════
+   PAGE 2 – INSTRUCTIONS
+═══════════════════════════════════════════ */
+.inst-page{padding:32px 24px;max-width:900px;margin:0 auto;}
+.inst-hero{
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  border-radius:16px;padding:32px 28px;color:#fff;margin-bottom:28px;
+  display:flex;align-items:center;gap:20px;
+}
+.inst-hero-ico{font-size:48px;flex-shrink:0;}
+.inst-hero h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.inst-hero p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;}
+
+.inst-section{margin-bottom:28px;}
+.inst-section-title{
+  font-size:16px;font-weight:800;color:var(--ink);
+  display:flex;align-items:center;gap:10px;
+  padding-bottom:10px;border-bottom:2px solid var(--border);margin-bottom:16px;
+}
+.inst-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;overflow:hidden;margin-bottom:12px;box-shadow:var(--sh1);
+}
+.inst-card-head{
+  padding:13px 16px;display:flex;align-items:center;gap:10px;
+  cursor:pointer;user-select:none;transition:background .15s;
+}
+.inst-card-head:hover{background:var(--surface2);}
+.inst-card-ico{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.inst-card-title{font-size:13px;font-weight:700;color:var(--ink);flex:1;}
+.inst-card-sub{font-size:11px;color:var(--ink3);margin-top:1px;}
+.inst-card-toggle{color:var(--ink4);transition:transform .2s;}
+.inst-card.open .inst-card-toggle{transform:rotate(180deg);}
+.inst-card-body{display:none;padding:0 16px 16px;}
+.inst-card.open .inst-card-body{display:block;}
+
+/* Parameter rows */
+.param-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.param-table th{
+  padding:8px 12px;background:var(--surface2);
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;
+  color:var(--ink3);text-align:left;border:1px solid var(--border);
+}
+.param-table td{
+  padding:9px 12px;border:1px solid var(--border);
+  font-size:12px;color:var(--ink2);vertical-align:top;line-height:1.5;
+}
+.param-table tr:nth-child(even) td{background:var(--surface2);}
+.valid-tag{
+  display:inline-block;background:var(--green-lt);border:1px solid var(--green-mid);
+  color:var(--green);font-size:10px;font-weight:700;border-radius:100px;
+  padding:2px 8px;
+}
+.invalid-tag{
+  display:inline-block;background:var(--red-lt);border:1px solid var(--red-mid);
+  color:var(--red);font-size:10px;font-weight:700;border-radius:100px;
+  padding:2px 8px;
+}
+.pts-tag{
+  display:inline-block;background:var(--blue-lt);border:1px solid var(--blue-mid);
+  color:var(--blue);font-size:11px;font-weight:800;border-radius:6px;
+  padding:2px 8px;white-space:nowrap;
+}
+.alert-box{
+  border-radius:10px;padding:12px 16px;
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;
+  font-size:12px;line-height:1.6;
+}
+.alert-box.warn{background:var(--amber-lt);border:1.5px solid var(--amber-mid);color:var(--amber-dk);}
+.alert-box.info{background:var(--blue-lt);border:1.5px solid var(--blue-mid);color:var(--blue-dk);}
+.alert-box.success{background:var(--green-lt);border:1.5px solid var(--green-mid);color:var(--green-dk);}
+.alert-box.danger{background:var(--red-lt);border:1.5px solid var(--red-mid);color:var(--red-dk);}
+.alert-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+/* Checklist */
+.checklist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.checklist li{
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:13px;color:var(--ink2);line-height:1.5;
+}
+.cl-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;}
+
+/* Status legend */
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.leg-item{
+  display:flex;align-items:center;gap:7px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;color:var(--ink2);
+}
+
+/* ═══════════════════════════════════════════
+   PAGE 3 – CALCULATOR (same as v3)
+═══════════════════════════════════════════ */
+/* Navbar additions for calc page */
+.calc-topbar{
+  background:linear-gradient(135deg,#1a3a8f 0%,#1e4dcc 55%,#2563eb 100%);
+  padding:20px 24px;display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;
+}
+.td-main{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);border-radius:14px;padding:16px 22px;display:flex;flex-direction:column;gap:4px;min-width:160px;}
+.td-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:12px 16px;flex:1;min-width:110px;display:flex;flex-direction:column;gap:3px;transition:background .2s;}
+.td-card:hover{background:rgba(255,255,255,.16);}
+.td-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.9px;}
+.td-val{font-size:24px;font-weight:800;color:#fff;line-height:1.1;}
+.td-main .td-val{font-size:36px;}
+.td-sub{font-size:11px;color:rgba(255,255,255,.5);font-weight:500;}
+.td-bar{height:3px;background:rgba(255,255,255,.12);border-radius:2px;margin-top:8px;overflow:hidden;}
+.td-bar-f{height:100%;border-radius:2px;background:rgba(255,255,255,.7);transition:width .5s;}
+.exp-bar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.exp-pill{display:flex;align-items:center;gap:8px;background:var(--blue-lt);border:1.5px solid var(--blue-mid);border-radius:100px;padding:5px 16px 5px 12px;}
+.exp-pill label{font-size:12px;font-weight:700;color:var(--blue);}
+.exp-pill input{width:48px;border:none;background:transparent;outline:none;font-family:inherit;font-size:20px;font-weight:800;color:var(--blue);text-align:center;}
+.exp-pill span{font-size:12px;font-weight:600;color:var(--blue);}
+.btn-reset2{background:var(--red-lt);border:1.5px solid var(--red-mid);color:var(--red);border-radius:8px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.btn-reset2:hover{background:var(--red-mid);}
+.exp-note{font-size:11px;color:var(--ink3);font-style:italic;}
+
+.req-section{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 24px;}
+.req-sec-title{font-size:12px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:1.2px;display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.exp-tag{background:var(--blue-lt);border:1px solid var(--blue-mid);color:var(--blue);font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px;}
+.req-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
+.req-card{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:12px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;transition:all .2s;min-height:148px;}
+.req-card.met{background:var(--green-lt);border-color:#86efac;}
+.req-card.partial{background:var(--amber-lt);border-color:#fcd34d;}
+.req-card.missing{background:var(--red-lt);border-color:#fca5a5;}
+.rc-emoji{font-size:24px;margin-bottom:6px;line-height:1;}
+.rc-name{font-size:11px;font-weight:800;color:var(--ink2);line-height:1.2;margin-bottom:7px;}
+.rc-score-row{display:flex;align-items:flex-end;justify-content:center;gap:0;margin-bottom:5px;}
+.rc-achieved{font-size:26px;font-weight:800;line-height:1;}
+.req-card.met .rc-achieved{color:var(--green);}
+.req-card.partial .rc-achieved{color:var(--amber);}
+.req-card.missing .rc-achieved{color:var(--red);}
+.rc-slash{font-size:16px;font-weight:700;color:var(--ink4);padding:0 2px;line-height:1.4;}
+.rc-required{font-size:16px;font-weight:700;color:var(--ink3);line-height:1;}
+.rc-period{font-size:10px;font-weight:600;color:var(--ink4);margin-bottom:7px;}
+.rc-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;padding:3px 9px;border-radius:100px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+.met .rc-badge{background:var(--green-mid);color:var(--green-dk);}
+.partial .rc-badge{background:var(--amber-mid);color:var(--amber-dk);}
+.missing .rc-badge{background:var(--red-mid);color:var(--red-dk);}
+
+.main-layout{display:grid;grid-template-columns:1fr 320px;gap:18px;padding:18px 24px;align-items:start;}
+.score-panel{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh1);overflow:hidden;margin-bottom:18px;}
+.sp-head{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sp-head-title{font-size:13px;font-weight:800;color:var(--ink);}
+.sp-head-sub{font-size:11px;color:var(--ink3);}
+.sp-table{width:100%;border-collapse:collapse;}
+.sp-table th{padding:9px 14px;background:var(--surface2);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);text-align:center;border-bottom:1px solid var(--border);}
+.sp-table th:first-child{text-align:left;}
+.sp-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;text-align:center;vertical-align:middle;}
+.sp-table td:first-child{text-align:left;}
+.sp-table tr:last-child td{border-bottom:none;}
+.sp-table tr:hover td{background:#f8faff;}
+.sp-cat-label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--ink);}
+.sp-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+.sp-req-pts{font-size:14px;font-weight:700;color:var(--ink3);}
+.sp-scored-pts{font-size:16px;font-weight:800;}
+.sp-scored-pts.zero{color:var(--ink4);}.sp-scored-pts.ok{color:var(--green);}.sp-scored-pts.warn{color:var(--amber);}.sp-scored-pts.lag{color:var(--red);}
+.sp-gap{font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;}
+.sp-gap.g-ok{background:var(--green-lt);color:var(--green);}.sp-gap.g-warn{background:var(--amber-lt);color:var(--amber);}.sp-gap.g-lag{background:var(--red-lt);color:var(--red);}
+.sp-status{font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;display:inline-block;text-transform:uppercase;letter-spacing:.4px;}
+.st-perfect{background:var(--green-mid);color:var(--green-dk);}.st-improve{background:var(--amber-mid);color:var(--amber-dk);}.st-lagging{background:var(--red-mid);color:var(--red-dk);}.st-none{background:var(--border);color:var(--ink4);}
+
+.sec-lbl{font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:1.2px;display:flex;align-items:center;gap:8px;margin:4px 0 10px;}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.cat-card2{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh1);overflow:hidden;margin-bottom:12px;transition:box-shadow .2s,border-color .2s;}
+.cat-card2:hover{box-shadow:var(--sh2);}
+.cat-card2.open{border-color:var(--blue-mid);}
+.cat-hdr{padding:13px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
+.cat-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cat-meta{flex:1;}
+.cat-title2{font-size:14px;font-weight:700;color:var(--ink);}
+.cat-desc2{font-size:11px;color:var(--ink3);margin-top:2px;}
+.rsp{display:flex;border-radius:10px;overflow:hidden;border:1.5px solid var(--border2);flex-shrink:0;}
+.rsp-block{padding:4px 10px;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:56px;}
+.rsp-block:first-child{background:var(--surface2);}
+.rsp-block.scored{background:var(--blue-lt);}
+.rsp-lbl{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink4);}
+.rsp-val{font-size:15px;font-weight:800;color:var(--ink);}
+.rsp-block.scored .rsp-val{color:var(--blue);}
+.rsp-divider{width:1px;background:var(--border2);}
+.cat-toggle2{color:var(--ink4);font-size:13px;transition:transform .2s;margin-left:4px;flex-shrink:0;}
+.cat-card2.open .cat-toggle2{transform:rotate(180deg);}
+.cat-prog-track{height:3px;background:var(--border);}
+.cat-prog-bar{height:100%;border-radius:2px;transition:width .4s;}
+.cat-body2{display:none;padding:0 14px 14px;}
+.cat-card2.open .cat-body2{display:block;}
+.itbl-head{display:grid;grid-template-columns:1fr 86px 90px 70px;gap:8px;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0;margin-top:10px;}
+.ith{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink3);text-align:center;}
+.ith:first-child{text-align:left;}
+.itbl{border:1px solid var(--border);border-radius:0 0 8px 8px;overflow:hidden;}
+.irow{display:grid;grid-template-columns:1fr 86px 90px 70px;gap:8px;padding:10px 10px;align-items:center;border-bottom:1px solid var(--border);background:var(--surface);transition:background .12s;}
+.irow:last-child{border-bottom:none;}
+.irow:hover{background:#f5f8ff;}
+.irow:nth-child(even){background:var(--surface2);}
+.irow:nth-child(even):hover{background:#f0f4ff;}
+.ir-inf{cursor:pointer;}
+.ir-title2{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;}
+.ir-sub2{font-size:11px;color:var(--ink4);margin-top:2px;}
+.ir-rule-tag{display:inline-flex;align-items:center;background:var(--blue-lt);border:1px solid var(--blue-mid);color:var(--blue);font-size:9px;font-weight:700;border-radius:100px;padding:2px 8px;margin-top:4px;}
+.ctr{display:flex;align-items:center;justify-content:center;gap:5px;}
+.cbtn{width:27px;height:27px;border-radius:7px;border:1.5px solid var(--border2);background:var(--surface);color:var(--ink2);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.cbtn:hover{background:var(--blue-lt);border-color:var(--blue-mid);color:var(--blue);}
+.cval{font-size:16px;font-weight:800;color:var(--ink);min-width:22px;text-align:center;}
+.pts-each{font-size:15px;font-weight:800;text-align:center;}
+.pts-scored{font-size:17px;font-weight:800;text-align:center;transition:color .2s;}
+.pts-scored.zero{color:var(--ink4);}.pts-scored.pos{color:var(--green);}
+
+.sidebar{display:flex;flex-direction:column;gap:14px;position:sticky;top:68px;}
+.side-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh1);overflow:hidden;}
+.sc-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;}
+.sc-head-icon{font-size:16px;}
+.sc-head-title{font-size:13px;font-weight:800;color:var(--ink);}
+.sc-body{padding:14px 16px;}
+.health-wrap{margin-bottom:6px;}
+.health-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:7px;}
+.health-label-txt{font-size:14px;font-weight:700;color:var(--ink2);}
+.health-pct{font-size:24px;font-weight:800;}
+.health-track{height:12px;background:var(--border);border-radius:6px;overflow:hidden;}
+.health-fill{height:100%;border-radius:6px;transition:width .5s,background .4s;}
+.health-note{font-size:11px;color:var(--ink3);margin-top:6px;}
+.sug-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.sug-item:last-child{border-bottom:none;}
+.sug-ico{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.sug-ico.perfect{background:var(--green-lt);}.sug-ico.lagging{background:var(--red-lt);}.sug-ico.improve{background:var(--amber-lt);}.sug-ico.info{background:var(--blue-lt);}
+.sug-txt{font-size:12px;line-height:1.6;color:var(--ink2);}
+.sug-txt strong{color:var(--ink);font-weight:700;}
+.sug-tag{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:100px;margin-right:4px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px;}
+.sug-tag.t-p{background:var(--green-mid);color:var(--green-dk);}.sug-tag.t-w{background:var(--amber-mid);color:var(--amber-dk);}.sug-tag.t-l{background:var(--red-mid);color:var(--red-dk);}.sug-tag.t-i{background:var(--blue-mid);color:var(--blue-dk);}
+
+.modal-ov{display:none;position:fixed;inset:0;z-index:999;background:rgba(20,36,70,.45);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+.modal-ov.show{display:flex;}
+.modal2{background:var(--surface);border:1.5px solid var(--border2);border-radius:18px;padding:26px 28px;max-width:480px;width:92%;box-shadow:var(--sh3);animation:mIn .2s ease;position:relative;}
+@keyframes mIn{from{transform:translateY(12px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.m-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:var(--ink3);}
+.m-close:hover{background:var(--border);}
+.m-icon{font-size:30px;margin-bottom:10px;}
+.m-title2{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.m-pts-tag{display:inline-flex;align-items:center;gap:6px;background:var(--green-lt);border:1.5px solid var(--green-mid);color:var(--green);font-size:20px;font-weight:800;border-radius:10px;padding:6px 16px;margin-bottom:14px;}
+.m-rule2{background:var(--blue-lt);border:1px solid var(--blue-mid);border-radius:9px;padding:11px 14px;font-size:13px;font-weight:600;color:var(--blue-dk);margin-bottom:10px;}
+.m-ugc2{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:11px 14px;font-size:12px;color:var(--ink2);line-height:1.65;}
+.m-ugc2 strong{color:var(--violet);font-weight:700;}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a2540;color:#fff;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+@media(max-width:980px){.main-layout{grid-template-columns:1fr;padding:14px;}.sidebar{position:static;}.req-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:640px){.req-grid{grid-template-columns:repeat(2,1fr);}.g-tabs{display:none;}.hero h1{font-size:28px;}.itbl-head,.irow{grid-template-columns:1fr 70px 74px 58px;gap:5px;}}
+</style>
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<nav class="g-nav">
+  <div class="g-brand" onclick="goPage('home')">
+    <div class="g-logo">API</div>
+    <div class="g-brand-text">
+      <div class="g-title">Faculty API Score Hub</div>
+      <div class="g-sub">AICTE IDEA Lab · Mailam Engineering College</div>
+    </div>
+  </div>
+  <div class="g-tabs">
+    <button class="g-tab active" id="tab-home" onclick="goPage('home')">🏠 Home</button>
+    <button class="g-tab" id="tab-guide" onclick="goPage('guide')">📖 How to Use</button>
+    <button class="g-tab" id="tab-calc" onclick="goPage('calc')">🧮 Calculator</button>
+  </div>
+  <button class="g-share-btn" onclick="copyShareLink()">🔗 Share Link</button>
+</nav>
+
+<!-- ═══════════ PAGE: HOME ═══════════ -->
+<div class="page active" id="page-home">
+
+  <div class="hero">
+    <div class="hero-badge">🎓 AICTE IDEA Lab · UGC/AICTE CAS Promotion Tool</div>
+    <h1>Know Your <span>Faculty API Score</span><br>Before the Promotion</h1>
+    <p>A free, instant tool for Mailam Engineering College faculty to self-assess their Academic Performance Indicator score as per UGC & AICTE guidelines — updated for 2024.</p>
+    <div class="hero-btns">
+      <button class="hero-btn-primary" onclick="goPage('calc')">🧮 Open Calculator →</button>
+      <button class="hero-btn-sec" onclick="goPage('guide')">📖 How to Use</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hs-item"><div class="hs-val">7</div><div class="hs-lbl">Mandatory Items</div></div>
+      <div class="hs-item"><div class="hs-val">6</div><div class="hs-lbl">Score Categories</div></div>
+      <div class="hs-item"><div class="hs-val">30+</div><div class="hs-lbl">Output Types</div></div>
+      <div class="hs-item"><div class="hs-val">Free</div><div class="hs-lbl">Always Free</div></div>
+    </div>
+  </div>
+
+  <!-- How to Use Steps -->
+  <div class="how-section">
+    <h2>How to Use This Tool</h2>
+    <p class="how-sub">Takes less than 5 minutes. No login needed. Works on mobile.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Enter Experience Years</h3>
+        <p>Type your total teaching experience in years. All requirements auto-adjust based on your experience period (per 3 yrs or per 5 yrs).</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Open Each Category</h3>
+        <p>Click on Journals, Patents, Books etc. Use the + / − buttons to enter how many of each output type you have.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Check Requirements</h3>
+        <p>The 7 Mandatory Requirement cards update live — green means met, yellow means partial, red means missing.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>Read the Suggestions</h3>
+        <p>The right sidebar shows exactly where you are Perfected, what needs to Improve, and what is Lagging.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <h3>Share or Bookmark</h3>
+        <p>Copy the share link and send to colleagues. Bookmark the page — open any time on phone or laptop to check your status.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share section -->
+  <div style="padding:0 24px;">
+    <div class="share-section">
+      <h3>📤 Share with Your Department</h3>
+      <p>Send this link to all faculty in your department. They can open it on any device — no login, no download needed.</p>
+      <div class="share-url-box">
+        <span id="share-url-display">📎 Loading link…</span>
+        <button class="copy-btn" onclick="copyShareLink()">📋 Copy Link</button>
+      </div>
+      <div class="share-icons">
+        <button class="share-icon-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
+        <button class="share-icon-btn" onclick="shareEmail()">📧 Email</button>
+        <button class="share-icon-btn" onclick="copyShareLink()">🔗 Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features">
+    <h2>What This Tool Covers</h2>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-ico" style="background:#eff4ff;">📰</div><div class="feat-txt"><h4>Journals — Scopus / WoS / Refereed</h4><p>Q1, Q2, Q3/Q4 papers with correct points. UGC CARE list abolished Oct 2024 — new refereed journal rules applied.</p></div></div>
+      <div class="feat-card"><div class="feat-ico" style="background:#f5f3ff;">🎤</div><div class="feat-txt"><h4>Conference Papers & Editorship</h4><p>Scopus-indexed, non-indexed, national papers. Mandatory conference editorship tracking included.</p></div></div>
+      <div class="feat-card"><div class="feat-ico" style="background:#f0fdf4;">🔭</div><div class="feat-txt"><h4>Research Funding / Projects</h4><p>International, Major (DST/SERB/CSIR), Minor, and Industry projects with correct PI/Co-PI rules.</p></div></div>
+      <div class="feat-card"><div class="feat-ico" style="background:#fffbeb;">🤝</div><div class="feat-txt"><h4>Consultancy</h4><p>₹2L, ₹10L, and above tiers. Mandatory 1 per 5-year block tracked automatically.</p></div></div>
+      <div class="feat-card"><div class="feat-ico" style="background:#f0fdfa;">📚</div><div class="feat-txt"><h4>Books & Book Chapters</h4><p>International/National ISBN books, edited volumes, and chapters. Mandatory 1 book per 3 yrs tracked.</p></div></div>
+      <div class="feat-card"><div class="feat-ico" style="background:#fff7ed;">💡</div><div class="feat-txt"><h4>Patents Filed / Published / Granted</h4><p>IPO & international patents at all stages, design registration, govt. awards — all three patent stages scored separately.</p></div></div>
+    </div>
+  </div>
+
+</div><!-- end home -->
+
+<!-- ═══════════ PAGE: GUIDE ═══════════ -->
+<div class="page" id="page-guide">
+  <div class="inst-page">
+
+    <div class="inst-hero">
+      <div class="inst-hero-ico">📖</div>
+      <div>
+        <h1>Complete Guide — How to Use the Faculty API Score Calculator</h1>
+        <p>Understand every parameter, valid documents, UGC rules (2024 updated), and how to read your results. Read this once — use the calculator confidently.</p>
+      </div>
+    </div>
+
+    <!-- Section 1: What is API -->
+    <div class="inst-section">
+      <div class="inst-section-title">🎯 What is API Score & Why Does It Matter?</div>
+      <div class="alert-box info"><span class="alert-ico">ℹ️</span><div><strong>API = Academic Performance Indicator</strong> — a numerical score calculated from your research outputs, used by UGC and AICTE to determine eligibility for CAS (Career Advancement Scheme) promotions from Assistant Professor to Associate Professor to Professor.</div></div>
+      <div class="alert-box success"><span class="alert-ico">✅</span><div><strong>Who needs this?</strong> Every faculty member applying for promotion under UGC CAS. Your API score is checked during every promotion — insufficient score = promotion rejected, regardless of years of service.</div></div>
+      <ul class="checklist">
+        <li><div class="cl-dot"></div>Promotion from Asst. Prof. Stage 1 → Stage 2 → Stage 3 requires minimum API scores</li>
+        <li><div class="cl-dot"></div>Score is checked for each assessment period (usually 3–5 years)</li>
+        <li><div class="cl-dot"></div>Both total score AND specific mandatory requirements must be met</li>
+        <li><div class="cl-dot"></div>Missing even ONE mandatory item can block promotion</li>
+      </ul>
+    </div>
+
+    <!-- Section 2: 7 Mandatory Requirements -->
+    <div class="inst-section">
+      <div class="inst-section-title">📋 The 7 Mandatory Requirements Explained</div>
+      <table class="param-table">
+        <thead><tr><th>#</th><th>Requirement</th><th>How Often Required</th><th>What Counts</th><th>What Doesn't Count</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>📚 ISBN Book</strong></td><td>1 per 3 years</td><td><span class="valid-tag">✓ International publisher book</span> <span class="valid-tag">✓ National ISBN book (PHI, TMH)</span></td><td><span class="invalid-tag">✗ Self-published</span> <span class="invalid-tag">✗ Lab manuals</span> <span class="invalid-tag">✗ Book chapters alone</span></td></tr>
+          <tr><td>2</td><td><strong>💡 Patent / Design</strong></td><td>1 per 3 years</td><td><span class="valid-tag">✓ Patent Filed</span> <span class="valid-tag">✓ Patent Published</span> <span class="valid-tag">✓ Patent Granted</span> <span class="valid-tag">✓ Design Registration</span></td><td><span class="invalid-tag">✗ Idea not filed</span> <span class="invalid-tag">✗ Copyright alone</span></td></tr>
+          <tr><td>3</td><td><strong>🏆 Govt. Award</strong></td><td>1 per 3 years</td><td><span class="valid-tag">✓ DST INSPIRE</span> <span class="valid-tag">✓ DBT Fellow</span> <span class="valid-tag">✓ TANSCHE/TNSCST award</span> <span class="valid-tag">✓ State/National level</span></td><td><span class="invalid-tag">✗ Internal college award</span> <span class="invalid-tag">✗ Private organization award</span></td></tr>
+          <tr><td>4</td><td><strong>🔭 Funded Project</strong></td><td>1 per 5 years</td><td><span class="valid-tag">✓ DST / SERB</span> <span class="valid-tag">✓ CSIR / DBT</span> <span class="valid-tag">✓ AICTE RPS</span> <span class="valid-tag">✓ Industry R&D</span></td><td><span class="invalid-tag">✗ Unfunded projects</span> <span class="invalid-tag">✗ Personal projects</span></td></tr>
+          <tr><td>5</td><td><strong>🤝 Consultancy</strong></td><td>1 per 5 years</td><td><span class="valid-tag">✓ Any amount through institution</span> <span class="valid-tag">✓ Client letter + payment proof</span></td><td><span class="invalid-tag">✗ Freelance (not routed through institution)</span> <span class="invalid-tag">✗ Undeclared work</span></td></tr>
+          <tr><td>6</td><td><strong>📰 Q1/Q2 Journal Papers</strong></td><td>1 per year of experience</td><td><span class="valid-tag">✓ Scopus Q1</span> <span class="valid-tag">✓ Scopus Q2</span> <span class="valid-tag">✓ WoS SCI indexed</span></td><td><span class="invalid-tag">✗ Q3/Q4 alone not enough</span> <span class="invalid-tag">✗ Conference papers don't count here</span></td></tr>
+          <tr><td>7</td><td><strong>📝 Int. Conf. Editorship</strong></td><td>1 per 3 years</td><td><span class="valid-tag">✓ Proceedings editor</span> <span class="valid-tag">✓ Organising committee chair</span> <span class="valid-tag">✓ Volume editor with appointment letter</span></td><td><span class="invalid-tag">✗ Session chair alone</span> <span class="invalid-tag">✗ Reviewer only</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 3: Journal -->
+    <div class="inst-section">
+      <div class="inst-section-title">📰 Journals — Valid Parameters</div>
+      <div class="alert-box warn"><span class="alert-ico">⚠️</span><div><strong>UGC CARE List ABOLISHED — October 3, 2024.</strong> The UGC 584th meeting officially discontinued the CARE journal whitelist. Now, any Transparent Peer-Reviewed journal with valid ISSN, impact factor, and ethical publishing is valid. Your institution (HEI) evaluates quality per UGC suggestive parameters. Scopus/WoS indexing remains the gold standard.</div></div>
+      <table class="param-table">
+        <thead><tr><th>Journal Type</th><th>Score</th><th>Valid Documents</th><th>Key Rule</th></tr></thead>
+        <tbody>
+          <tr><td>🏅 Scopus / WoS Q1</td><td><span class="pts-tag">35 pts</span></td><td>DOI + Scimago Q1 screenshot + acceptance letter</td><td>1st / corresponding author = full pts. Co-author = 10 pts</td></tr>
+          <tr><td>🥈 Scopus / WoS Q2</td><td><span class="pts-tag">25 pts</span></td><td>DOI + Scimago Q2 confirmation</td><td>Verify quartile at scimago.org before submission</td></tr>
+          <tr><td>📊 Scopus / WoS Q3/Q4</td><td><span class="pts-tag">10 pts</span></td><td>DOI + Scopus author page screenshot</td><td>Lower quartile but still Scopus indexed — valid</td></tr>
+          <tr><td>📄 Peer-Reviewed / Refereed Journal</td><td><span class="pts-tag">5 pts</span></td><td>ISSN, editorial board visible, impact factor</td><td>Post-Oct 2024 UGC rule. Institution validates. Avoid predatory journals (check Beall's list)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 4: Patents -->
+    <div class="inst-section">
+      <div class="inst-section-title">💡 Patents — All 3 Stages Explained</div>
+      <div class="alert-box info"><span class="alert-ico">ℹ️</span><div>Patents are scored at <strong>3 stages</strong> — Filed, Published, Granted. You move up as the patent progresses. <strong>Filing alone satisfies the mandatory requirement</strong> and earns 10 pts immediately.</div></div>
+      <table class="param-table">
+        <thead><tr><th>Stage</th><th>Score</th><th>What to Submit</th><th>Timeline</th></tr></thead>
+        <tbody>
+          <tr><td>📮 Patent Filed</td><td><span class="pts-tag">10 pts</span></td><td>IPO application number + filing receipt</td><td>Immediate after filing. Points upgraded later.</td></tr>
+          <tr><td>📰 Patent Published</td><td><span class="pts-tag">15 pts</span></td><td>Official Gazette reference number</td><td>~18 months after filing. Replaces filed score.</td></tr>
+          <tr><td>🏛️ Patent Granted – India</td><td><span class="pts-tag">25 pts</span></td><td>IPO Grant Certificate with grant number</td><td>2–5 years. Co-inventors share equally.</td></tr>
+          <tr><td>🌍 Patent Granted – International</td><td><span class="pts-tag">30 pts</span></td><td>USPTO / EPO / PCT Grant Certificate</td><td>Highest IP score. Institution name earns bonus credit.</td></tr>
+          <tr><td>🎨 Design Registration</td><td><span class="pts-tag">10 pts</span></td><td>CGPDTM Design Registration Certificate</td><td>Separate from patent. Counts independently.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 5: How to read results -->
+    <div class="inst-section">
+      <div class="inst-section-title">📊 How to Read Your Results</div>
+      <div class="legend">
+        <div class="leg-item"><span style="width:10px;height:10px;border-radius:50%;background:#15803d;display:inline-block;"></span> ✓ Perfected — Requirement fully met</div>
+        <div class="leg-item"><span style="width:10px;height:10px;border-radius:50%;background:#d97706;display:inline-block;"></span> ⚠ Improve — Partially done, needs more</div>
+        <div class="leg-item"><span style="width:10px;height:10px;border-radius:50%;background:#dc2626;display:inline-block;"></span> ✗ Lagging — Not started or critically short</div>
+      </div>
+      <ul class="checklist">
+        <li><div class="cl-dot"></div><strong>Required Pts column</strong> — Minimum score expected for your experience period</li>
+        <li><div class="cl-dot"></div><strong>Your Score column</strong> — What you have actually scored (green = on track)</li>
+        <li><div class="cl-dot"></div><strong>Gap column</strong> — Exact points you still need (–30 pts means 30 more needed)</li>
+        <li><div class="cl-dot"></div><strong>Suggestions panel</strong> — Tells you exactly what to do next with priority order</li>
+        <li><div class="cl-dot"></div><strong>Health score %</strong> — Overall % of 7 mandatory requirements you have met</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center;padding:20px 0 10px;">
+      <button class="hero-btn-primary" style="background:var(--blue);color:#fff;" onclick="goPage('calc')">🧮 Open Calculator Now →</button>
+    </div>
+
+  </div>
+</div><!-- end guide -->
+
+<!-- ═══════════ PAGE: CALCULATOR ═══════════ -->
+<div class="page" id="page-calc">
+
+  <!-- Score Dashboard -->
+  <div class="calc-topbar" id="calc-topbar">
+    <div class="td-main">
+      <div class="td-label">Total API Score</div>
+      <div class="td-val" id="ds-total">0</div>
+      <div class="td-sub" id="ds-sub">Enter outputs below</div>
+    </div>
+    <div class="td-card"><div class="td-label">📰 Journals</div><div class="td-val" id="ds-j">0</div><div class="td-sub">Papers</div><div class="td-bar"><div class="td-bar-f" id="db-j" style="width:0%"></div></div></div>
+    <div class="td-card"><div class="td-label">🎤 Conferences</div><div class="td-val" id="ds-c">0</div><div class="td-sub">Papers + Editorship</div><div class="td-bar"><div class="td-bar-f" id="db-c" style="width:0%"></div></div></div>
+    <div class="td-card"><div class="td-label">🔭 Projects</div><div class="td-val" id="ds-p">0</div><div class="td-sub">Funded</div><div class="td-bar"><div class="td-bar-f" id="db-p" style="width:0%"></div></div></div>
+    <div class="td-card"><div class="td-label">🤝 Consultancy</div><div class="td-val" id="ds-cn">0</div><div class="td-sub">Paid work</div><div class="td-bar"><div class="td-bar-f" id="db-cn" style="width:0%"></div></div></div>
+    <div class="td-card"><div class="td-label">📚 Books</div><div class="td-val" id="ds-b">0</div><div class="td-sub">Books + Chapters</div><div class="td-bar"><div class="td-bar-f" id="db-b" style="width:0%"></div></div></div>
+    <div class="td-card"><div class="td-label">💡 Patents</div><div class="td-val" id="ds-pt">0</div><div class="td-sub">IP + Awards</div><div class="td-bar"><div class="td-bar-f" id="db-pt" style="width:0%"></div></div></div>
+  </div>
+
+  <!-- Experience bar -->
+  <div class="exp-bar">
+    <div class="exp-pill">
+      <label>Teaching Experience</label>
+      <input type="number" id="expYears" value="12" min="1" max="45" oninput="recalc()">
+      <span>Years</span>
+    </div>
+    <button class="btn-reset2" onclick="resetAll()">↺ Reset All</button>
+    <span class="exp-note">All requirement thresholds auto-update based on your experience.</span>
+  </div>
+
+  <!-- Requirements -->
+  <div class="req-section">
+    <div class="req-sec-title">📋 Mandatory Requirements <span class="exp-tag" id="req-exp-tag">12 Years</span></div>
+    <div class="req-grid" id="reqGrid"></div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <div>
+      <!-- Score Table -->
+      <div class="score-panel">
+        <div class="sp-head">
+          <div class="sp-head-title">📊 Required API vs Your Score — Category Breakdown</div>
+          <div class="sp-head-sub">Gap = points still needed</div>
+        </div>
+        <table class="sp-table">
+          <thead><tr>
+            <th style="text-align:left;">Category</th>
+            <th>Required Pts</th>
+            <th>Your Score</th>
+            <th>Gap</th>
+            <th>Status</th>
+          </tr></thead>
+          <tbody id="scoreTable"></tbody>
+        </table>
+      </div>
+      <!-- Category Cards -->
+      <div id="catWrap"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="side-card">
+        <div class="sc-head"><span class="sc-head-icon">⚡</span><span class="sc-head-title">Overall API Health</span></div>
+        <div class="sc-body">
+          <div class="health-wrap">
+            <div class="health-top">
+              <span class="health-label-txt" id="h-label">Not Started</span>
+              <span class="health-pct" id="h-pct" style="color:var(--blue)">0%</span>
+            </div>
+            <div class="health-track"><div class="health-fill" id="h-fill" style="width:0%;background:var(--blue)"></div></div>
+            <div class="health-note" id="h-note">Add outputs to see your score</div>
+          </div>
+          <div id="sideSummary"></div>
+        </div>
+      </div>
+      <div class="side-card">
+        <div class="sc-head"><span class="sc-head-icon">💡</span><span class="sc-head-title">Analysis &amp; Suggestions</span></div>
+        <div class="sc-body" id="suggestions"><div style="color:var(--ink4);font-size:12px;text-align:center;padding:14px 0;">Add outputs above to see analysis</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- end calc -->
+
+<!-- MODAL -->
+<div class="modal-ov" id="modalOv">
+  <div class="modal2">
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-icon" id="m-ico"></div>
+    <div class="m-title2" id="m-title"></div>
+    <div class="m-pts-tag" id="m-pts"></div>
+    <div class="m-rule2" id="m-rule"></div>
+    <div class="m-ugc2" id="m-ugc"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ NAVIGATION ═══
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  window.location.hash = id;
+  window.scrollTo(0,0);
+}
+// Handle hash on load
+window.addEventListener('load',()=>{
+  const h=window.location.hash.replace('#','');
+  if(['home','guide','calc'].includes(h)) goPage(h);
+  document.getElementById('share-url-display').textContent = window.location.href.split('#')[0]+'#calc';
+});
+
+// ═══ SHARE ═══
+function copyShareLink(){
+  const url = window.location.href.split('#')[0]+'#calc';
+  navigator.clipboard.writeText(url).then(()=>showToast('✅ Link copied! Share with your colleagues.'));
+}
+function shareWhatsApp(){
+  const url = encodeURIComponent(window.location.href.split('#')[0]+'#calc');
+  const msg = encodeURIComponent('Check your Faculty API Score instantly — free tool by AICTE IDEA Lab, Mailam Engineering College: ');
+  window.open('https://wa.me/?text='+msg+url,'_blank');
+}
+function shareEmail(){
+  const url = window.location.href.split('#')[0]+'#calc';
+  const sub = encodeURIComponent('Faculty API Score Calculator – Check Your CAS Promotion Score');
+  const body = encodeURIComponent('Dear Colleague,\n\nPlease use this free tool to check your Faculty API Score for UGC/AICTE CAS Promotion:\n\n'+url+'\n\nShared by AICTE IDEA Lab, Mailam Engineering College.');
+  window.open('mailto:?subject='+sub+'&body='+body);
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ═══ INSTRUCTION ACCORDIONS ═══
+document.querySelectorAll('.inst-card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.closest('.inst-card').classList.toggle('open'));
+});
+
+// ═══ DATA ═══
+const CATS=[
+  {id:'journal',group:'research',color:'#2563eb',bg:'#eff4ff',icon:'📰',title:'Journal Papers',desc:'Scopus, WoS & Peer-Reviewed (UGC Oct 2024 updated)',reqPts:100,
+   items:[
+    {id:'j_q1', ico:'🏅',title:'Scopus / WoS Q1 Paper',sub:'Nature, IEEE Trans, Elsevier flagship',pts:35,rule:'35 pts (1st/corresponding author)',ugc:'Scopus Q1 / WoS SCI-E. Full 35 pts if 1st/corresponding; co-author = 10 pts. Always verify at scimago.org.'},
+    {id:'j_q2', ico:'🥈',title:'Scopus / WoS Q2 Paper',sub:'Mid-tier Scopus/WoS indexed',pts:25,rule:'25 pts per paper',ugc:'Scopus Q2 or WoS. Co-author = 10 pts. Check Scimago quartile before submission.'},
+    {id:'j_q34',ico:'📊',title:'Scopus / WoS Q3/Q4 Paper',sub:'Lower-quartile Scopus/WoS',pts:10,rule:'10 pts per paper',ugc:'Scopus Q3/Q4 or WoS indexed. Valid but lower score. Confirm indexing on Scopus author search.'},
+    {id:'j_ref', ico:'📄',title:'Transparent Peer-Reviewed / Refereed Journal',sub:'New UGC rule (Oct 3, 2024) — CARE list abolished',pts:5,rule:'5 pts | CARE list abolished Oct 2024',ugc:'⚠️ UGC CARE list OFFICIALLY DISCONTINUED Oct 3, 2024 (584th UGC meeting). Now any Transparent Peer-Reviewed journal with valid ISSN, editorial board, and ethical publishing is valid. HEI evaluates per UGC suggestive parameters. Avoid predatory journals — check Beall\'s list.'},
+  ]},
+  {id:'conference',group:'research',color:'#6d28d9',bg:'#f5f3ff',icon:'🎤',title:'Conference Papers',desc:'International & national conferences + editorial roles',reqPts:50,
+   items:[
+    {id:'cf_s', ico:'🌐',title:'Intl. Conference – Scopus Indexed',sub:'IEEE, ACM, Springer LNCS',pts:10,rule:'10 pts per paper',ugc:'Scopus/WoS indexed proceedings. Must be presented by author.'},
+    {id:'cf_i', ico:'✈️',title:'Intl. Conference – Non-indexed',sub:'ISBN/ISSN proceedings',pts:7,rule:'7 pts per paper',ugc:'Non-indexed but published proceedings. ISBN/ISSN required. Participation certificate mandatory.'},
+    {id:'cf_n', ico:'🇮🇳',title:'National Conference Paper',sub:'Published proceedings ISBN/ISSN',pts:5,rule:'5 pts per paper',ugc:'Co-author gets 60% points. ISBN/ISSN proceedings required.'},
+    {id:'cf_ed',ico:'📝',title:'Editor – International Conference',sub:'Editorial board / proceedings',pts:10,rule:'10 pts; MANDATORY 1 per 3 yrs',ugc:'MANDATORY: 1 per 3-year period. Appointment letter as editor/chair required.'},
+  ]},
+  {id:'project',group:'projects',color:'#15803d',bg:'#f0fdf4',icon:'🔭',title:'Research Projects',desc:'Govt, industry, international funded projects',reqPts:60,
+   items:[
+    {id:'pr_int',ico:'🌍',title:'International Funded Project',sub:'DAAD, DST-NSF, EU Horizon',pts:25,rule:'25 pts',ugc:'Official grant letter + institutional acceptance + utilization certificate required.'},
+    {id:'pr_maj',ico:'🏛️',title:'Major Project – Govt. Agency',sub:'DST, SERB, CSIR, DBT, AICTE',pts:20,rule:'20 pts; PI full / Co-PI 10 pts',ugc:'MANDATORY 1 per 5-year CAS. Min ₹5 Lakh. Completion certificate needed.'},
+    {id:'pr_min',ico:'🏢',title:'Minor Project – State/Institution',sub:'State DST, university grant',pts:10,rule:'10 pts per project',ugc:'< ₹5 Lakh. Sanction letter + expenditure statement required.'},
+    {id:'pr_ind',ico:'🏭',title:'Industry R&D Project',sub:'Company-funded collaboration',pts:15,rule:'15 pts per project',ugc:'MoU + fund transfer proof. Routed through institution.'},
+  ]},
+  {id:'consultancy',group:'projects',color:'#b45309',bg:'#fffbeb',icon:'🤝',title:'Consultancy',desc:'Paid professional consultancy through institution',reqPts:30,
+   items:[
+    {id:'cn_hi', ico:'💎',title:'Consultancy > ₹10 Lakh',sub:'High-value institutional',pts:15,rule:'15 pts per project',ugc:'Institution retains 20% overhead. Formal agreement through institution.'},
+    {id:'cn_mid',ico:'💼',title:'Consultancy ₹2–10 Lakh',sub:'Medium-scale',pts:10,rule:'10 pts; MANDATORY 1 per 5 yrs',ugc:'MANDATORY 1 per 5-year CAS. Client letter + payment required.'},
+    {id:'cn_sm', ico:'📦',title:'Consultancy < ₹2 Lakh',sub:'Small-scale',pts:5,rule:'5 pts per project',ugc:'Must be in institutional records. Client letter + payment receipt.'},
+  ]},
+  {id:'books',group:'books',color:'#0f766e',bg:'#f0fdfa',icon:'📚',title:'Books & Chapters',desc:'ISBN books and book chapters',reqPts:50,
+   items:[
+    {id:'bk_i', ico:'🌐',title:'Book – International Publisher',sub:'Springer, Elsevier, Wiley, CRC',pts:25,rule:'25 pts; MANDATORY 1 per 3 yrs',ugc:'US-ISBN from international publisher. MANDATORY 1 per 3 years. Min 100 pages. Not self-published.'},
+    {id:'bk_n', ico:'🇮🇳',title:'Book – National Publisher',sub:'PHI, TMH, Pearson India',pts:15,rule:'15 pts per book',ugc:'Indian ISBN from reputed publisher. Not vanity press. Publisher agreement needed.'},
+    {id:'bk_e', ico:'✏️',title:'Edited Book (International)',sub:'Edited volume with ISBN',pts:10,rule:'10 pts per edited volume',ugc:'Min 10 contributed chapters from different authors.'},
+    {id:'bkc_i',ico:'📑',title:'Book Chapter – International',sub:'Springer, Elsevier, Wiley…',pts:10,rule:'10 pts per chapter',ugc:'Peer reviewed. Max 3 chapters per same book counted.'},
+    {id:'bkc_n',ico:'📃',title:'Book Chapter – National',sub:'Chapter in national book',pts:5,rule:'5 pts per chapter',ugc:'Must be reviewed. Multiple chapters in same book = 1 entry.'},
+  ]},
+  {id:'patent',group:'books',color:'#c2410c',bg:'#fff7ed',icon:'💡',title:'Patents & Awards',desc:'IP rights, design registrations, recognition',reqPts:60,
+   items:[
+    {id:'pt_ig',ico:'🌍',title:'Patent Granted – International',sub:'USPTO, EPO, PCT granted',pts:30,rule:'30 pts – highest IP score',ugc:'Grant certificate mandatory. Co-inventors share equally.'},
+    {id:'pt_in',ico:'🏛️',title:'Patent Granted – India',sub:'Indian Patent Office',pts:25,rule:'25 pts per granted patent',ugc:'IPO grant certificate. Institution name earns bonus.'},
+    {id:'pt_pub',ico:'📰',title:'Patent Published (Not Granted)',sub:'Published in official gazette',pts:15,rule:'15 pts; MANDATORY 1 per 3 yrs',ugc:'MANDATORY 1 per 3-year period. Gazette reference required.'},
+    {id:'pt_fil',ico:'📮',title:'Patent Filed (Application)',sub:'Application number from IPO',pts:10,rule:'10 pts; provisional',ugc:'Provisional — upgraded when published (15) or granted (25–30).'},
+    {id:'design',ico:'🎨',title:'Design Registration',sub:'CGPDTM registration',pts:10,rule:'10 pts per design',ugc:'Counts separately from patents. Registration certificate required.'},
+    {id:'aw_g', ico:'🏆',title:'Govt. Award / Recognition',sub:'State/national, DST/DBT fellow',pts:15,rule:'15 pts; MANDATORY 1 per 3 yrs',ugc:'MANDATORY 1 per 3-year period. Includes DST INSPIRE, DBT Ramalingaswami, ISRO fellowships.'},
+    {id:'aw_i', ico:'🌟',title:'International Award',sub:'International body/govt award',pts:20,rule:'20 pts per award',ugc:'Foreign government or recognised international body. Formal presentation required.'},
+  ]},
+];
+
+const counts={};
+CATS.forEach(c=>c.items.forEach(it=>counts[it.id]=0));
+
+function buildUI(){
+  const wrap=document.getElementById('catWrap');
+  let lastG='';
+  CATS.forEach(cat=>{
+    if(cat.group!==lastG){
+      const l=document.createElement('div');l.className='sec-lbl';
+      l.textContent=cat.group==='research'?'📰 Research Outputs':cat.group==='projects'?'💰 Projects & Consultancy':'📚 Books, IP & Awards';
+      wrap.appendChild(l);lastG=cat.group;
+    }
+    const card=document.createElement('div');
+    card.className='cat-card2';card.id=`cc-${cat.id}`;
+    card.innerHTML=`
+      <div class="cat-hdr" onclick="toggleCat('${cat.id}')">
+        <div class="cat-ico" style="background:${cat.bg}">${cat.icon}</div>
+        <div class="cat-meta"><div class="cat-title2">${cat.title}</div><div class="cat-desc2">${cat.desc}</div></div>
+        <div class="rsp" id="rsp-${cat.id}">
+          <div class="rsp-block"><div class="rsp-lbl">Required</div><div class="rsp-val" id="rsp-req-${cat.id}">${cat.reqPts}</div></div>
+          <div class="rsp-divider"></div>
+          <div class="rsp-block scored"><div class="rsp-lbl">Scored</div><div class="rsp-val" id="rsp-scr-${cat.id}">0</div></div>
+        </div>
+        <div class="cat-toggle2">▾</div>
+      </div>
+      <div class="cat-prog-track"><div class="cat-prog-bar" id="cpb-${cat.id}" style="background:${cat.color};width:0%"></div></div>
+      <div class="cat-body2" id="cb-${cat.id}">
+        ${cat.id==='journal'?`<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;"><span style="font-size:16px;flex-shrink:0;">⚠️</span><div style="font-size:11px;line-height:1.6;color:#92400e;"><strong>UGC CARE list ABOLISHED Oct 3, 2024.</strong> Scopus/WoS remain gold standard. Refereed journals with valid ISSN now accepted as per new UGC rules.</div></div>`:''}
+        <div class="itbl-head">
+          <div class="ith">Output Type</div><div class="ith">Count</div>
+          <div class="ith">Pts Each</div><div class="ith">Scored</div>
+        </div>
+        <div class="itbl">
+          ${cat.items.map(it=>`
+          <div class="irow">
+            <div class="ir-inf" onclick="showModal('${it.id}')">
+              <div class="ir-title2">${it.ico} ${it.title}</div>
+              <div class="ir-sub2">${it.sub}</div>
+              <span class="ir-rule-tag">ℹ ${it.rule}</span>
+            </div>
+            <div class="ctr">
+              <button class="cbtn" onclick="ch('${it.id}',-1)">−</button>
+              <span class="cval" id="cv-${it.id}">0</span>
+              <button class="cbtn" onclick="ch('${it.id}',1)">+</button>
+            </div>
+            <div class="pts-each" style="color:${cat.color}">${it.pts}</div>
+            <div class="pts-scored zero" id="ps-${it.id}">0</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+}
+
+function toggleCat(id){document.getElementById(`cc-${id}`).classList.toggle('open');}
+function ch(id,d){counts[id]=Math.max(0,(counts[id]||0)+d);document.getElementById(`cv-${id}`).textContent=counts[id];recalc();}
+
+function recalc(){
+  const exp=Math.max(1,parseInt(document.getElementById('expYears').value)||1);
+  const p3=Math.max(1,Math.ceil(exp/3)),p5=Math.max(1,Math.ceil(exp/5));
+  document.getElementById('req-exp-tag').textContent=`${exp} Years`;
+  const tot={total:0,journal:0,conference:0,project:0,consultancy:0,books:0,patent:0};
+  const raw={books:0,patents:0,awards:0,projects:0,consults:0,q1q2:0,editors:0};
+
+  CATS.forEach(cat=>{
+    let catPts=0;
+    cat.items.forEach(it=>{
+      const c=counts[it.id]||0,pts=c*it.pts;
+      catPts+=pts;tot.total+=pts;tot[cat.id]=(tot[cat.id]||0)+pts;
+      const el=document.getElementById(`ps-${it.id}`);
+      el.textContent=pts;el.className=`pts-scored ${pts>0?'pos':'zero'}`;
+      if(['j_q1','j_q2'].includes(it.id)) raw.q1q2+=c;
+      if(['bk_i','bk_n'].includes(it.id)) raw.books+=c;
+      if(['pt_ig','pt_in','pt_pub','pt_fil','design'].includes(it.id)) raw.patents+=c;
+      if(it.id==='aw_g') raw.awards+=c;
+      if(['pr_int','pr_maj','pr_min','pr_ind'].includes(it.id)) raw.projects+=c;
+      if(['cn_hi','cn_mid','cn_sm'].includes(it.id)) raw.consults+=c;
+      if(it.id==='cf_ed') raw.editors+=c;
+    });
+    document.getElementById(`rsp-scr-${cat.id}`).textContent=catPts;
+    document.getElementById(`cpb-${cat.id}`).style.width=Math.min(100,(catPts/cat.reqPts)*100)+'%';
+  });
+
+  document.getElementById('ds-total').textContent=tot.total;
+  document.getElementById('ds-sub').textContent=tot.total>=400?'✅ Excellent':tot.total>=200?'⚡ Good':'📝 Keep adding';
+  ['j','c','p','cn','b','pt'].forEach((k,i)=>{
+    const id=['journal','conference','project','consultancy','books','patent'][i];
+    document.getElementById(`ds-${k}`).textContent=tot[id]||0;
+    document.getElementById(`db-${k}`).style.width=Math.min(100,((tot[id]||0)/200)*100)+'%';
+  });
+
+  const REQS=[
+    {ico:'📚',name:'ISBN Books',      achieved:raw.books,   req:p3,period:`per 3 yrs`},
+    {ico:'💡',name:'Patents/Design',  achieved:raw.patents, req:p3,period:`per 3 yrs`},
+    {ico:'🏆',name:'Govt. Awards',    achieved:raw.awards,  req:p3,period:`per 3 yrs`},
+    {ico:'🔭',name:'Funded Projects', achieved:raw.projects,req:p5,period:`per 5 yrs`},
+    {ico:'🤝',name:'Consultancy',     achieved:raw.consults,req:p5,period:`per 5 yrs`},
+    {ico:'📰',name:'Q1/Q2 Papers',    achieved:raw.q1q2,   req:exp,period:`per yr`},
+    {ico:'📝',name:'Conf. Editor',    achieved:raw.editors, req:p3,period:`per 3 yrs`},
+  ];
+  let metCount=0;
+  document.getElementById('reqGrid').innerHTML=REQS.map(r=>{
+    const pct=r.req>0?r.achieved/r.req:1;
+    const cls=pct>=1?'met':pct>0?'partial':'missing';
+    if(cls==='met') metCount++;
+    const badge=cls==='met'?'✓ Perfected':cls==='partial'?'⚠ Improve':'✗ Missing';
+    return `<div class="req-card ${cls}">
+      <div class="rc-emoji">${r.ico}</div>
+      <div class="rc-name">${r.name}</div>
+      <div class="rc-score-row">
+        <span class="rc-achieved">${r.achieved}</span>
+        <span class="rc-slash">/</span>
+        <span class="rc-required">${r.req}</span>
+      </div>
+      <div class="rc-period">Required ${r.period}</div>
+      <span class="rc-badge">${badge}</span>
+    </div>`;
+  }).join('');
+
+  const catRows=[
+    {id:'journal',    label:'📰 Journals',      color:'#2563eb',reqPts:Math.max(30,exp*5)},
+    {id:'conference', label:'🎤 Conferences',   color:'#6d28d9',reqPts:Math.max(20,p3*10)},
+    {id:'project',    label:'🔭 Projects',      color:'#15803d',reqPts:Math.max(20,p5*20)},
+    {id:'consultancy',label:'🤝 Consultancy',   color:'#b45309',reqPts:Math.max(10,p5*10)},
+    {id:'books',      label:'📚 Books/Chapters',color:'#0f766e',reqPts:Math.max(25,p3*25)},
+    {id:'patent',     label:'💡 Patents/Awards',color:'#c2410c',reqPts:Math.max(15,p3*15)},
+  ];
+  document.getElementById('scoreTable').innerHTML=catRows.map(r=>{
+    const sc=tot[r.id]||0,gap=Math.max(0,r.reqPts-sc),pct=r.reqPts>0?sc/r.reqPts:1;
+    const stCls=pct>=1?'st-perfect':pct>=.5?'st-improve':'st-lagging';
+    const stTxt=pct>=1?'✓ Perfected':pct>=.5?'⚠ Need Improve':'✗ Lagging';
+    const scCls=sc===0?'zero':pct>=1?'ok':pct>=.5?'warn':'lag';
+    const gCls=gap===0?'g-ok':pct>=.5?'g-warn':'g-lag';
+    return `<tr>
+      <td><div class="sp-cat-label"><div class="sp-dot" style="background:${r.color}"></div>${r.label}</div></td>
+      <td><span class="sp-req-pts">${r.reqPts} pts</span></td>
+      <td><span class="sp-scored-pts ${scCls}">${sc} pts</span></td>
+      <td>${gap===0?`<span class="sp-gap g-ok">✓ No gap</span>`:`<span class="sp-gap ${gCls}">−${gap} pts</span>`}</td>
+      <td><span class="sp-status ${stCls}">${stTxt}</span></td>
+    </tr>`;
+  }).join('');
+
+  const health=Math.round((metCount/7)*100);
+  const hf=document.getElementById('h-fill');
+  hf.style.width=health+'%';hf.style.background=health>=80?'#15803d':health>=50?'#d97706':'#dc2626';
+  document.getElementById('h-pct').textContent=health+'%';
+  document.getElementById('h-pct').style.color=health>=80?'var(--green)':health>=50?'var(--amber)':'var(--red)';
+  const hl=['Not Started','Very Low','Low','Needs Work','Developing','Average','Good','Strong','Very Strong','Excellent','Outstanding'];
+  document.getElementById('h-label').textContent=hl[Math.floor(health/10)]||'Outstanding';
+  document.getElementById('h-note').textContent=`${metCount} of 7 mandatory requirements met`;
+
+  document.getElementById('sideSummary').innerHTML=[
+    {dot:'#2563eb',lbl:'Journals',    val:tot.journal||0},
+    {dot:'#6d28d9',lbl:'Conferences', val:tot.conference||0},
+    {dot:'#15803d',lbl:'Projects',    val:tot.project||0},
+    {dot:'#b45309',lbl:'Consultancy', val:tot.consultancy||0},
+    {dot:'#0f766e',lbl:'Books/Chap',  val:tot.books||0},
+    {dot:'#c2410c',lbl:'Patents/IP',  val:tot.patent||0},
+  ].map(s=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:9px;height:9px;border-radius:3px;background:${s.dot};"></div>
+      <span style="font-size:12px;font-weight:600;color:var(--ink2);">${s.lbl}</span>
+    </div>
+    <span style="font-size:15px;font-weight:800;color:${s.val>0?s.dot:'var(--ink4)'};">${s.val} pts</span>
+  </div>`).join('')+`<div style="display:flex;justify-content:space-between;padding:10px 0 0;">
+    <span style="font-size:12px;font-weight:800;">TOTAL API</span>
+    <span style="font-size:20px;font-weight:800;color:var(--blue);">${tot.total} pts</span>
+  </div>`;
+
+  // Suggestions
+  const S=[];
+  if(raw.q1q2>=exp)    S.push({t:'perfect',i:'📰',tag:'Perfected',tx:`<strong>Journals on track!</strong> ${raw.q1q2} Q1/Q2 papers for ${exp} yrs — fully met.`});
+  if(raw.patents>=p3)  S.push({t:'perfect',i:'💡',tag:'Perfected',tx:`<strong>IP requirement met!</strong> ${raw.patents} patent/design — ${p3} required.`});
+  if(raw.books>=p3)    S.push({t:'perfect',i:'📚',tag:'Perfected',tx:`<strong>Books met!</strong> ${raw.books} book(s) for ${p3} required.`});
+  if(raw.projects>=p5) S.push({t:'perfect',i:'🔭',tag:'Perfected',tx:`<strong>Projects met!</strong> ${raw.projects} project(s) for ${p5} required.`});
+  if(raw.consults>=p5) S.push({t:'perfect',i:'🤝',tag:'Perfected',tx:`<strong>Consultancy met!</strong> ${raw.consults} engagement(s) for ${p5} required.`});
+  if(tot.total>=400)   S.push({t:'perfect',i:'🎉',tag:'Excellent',tx:`<strong>Score ${tot.total} pts — Outstanding!</strong> Well above CAS threshold.`});
+  if(raw.q1q2<exp)     S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>Journal gap:</strong> Need ${exp} Q1/Q2 papers, have ${raw.q1q2}. Publish <strong>${exp-raw.q1q2} more</strong> urgently.`});
+  if(raw.projects===0) S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>No funded project!</strong> Mandatory ${p5}/5 yrs. Apply to <strong>SERB SRG or AICTE RPS</strong> immediately.`});
+  if(raw.consults===0) S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>No consultancy record.</strong> ${p5}/5 yrs required. Even ₹2L through institution satisfies this.`});
+  if(raw.books===0)    S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>No ISBN book.</strong> ${p3}/3 yrs required. Target <strong>Springer, Elsevier, or Wiley.</strong>`});
+  if(raw.patents===0)  S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>No patent/IP.</strong> ${p3}/3 yrs required. <strong>Filing alone earns 10 pts</strong> and satisfies requirement.`});
+  if(raw.awards===0)   S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>No govt. award.</strong> ${p3}/3 yrs. Apply for <strong>TANSCHE, TNSCST, or DST INSPIRE.</strong>`});
+  if(raw.editors===0)  S.push({t:'lagging',i:'⛔',tag:'Lagging',tx:`<strong>No conf. editorship.</strong> ${p3}/3 yrs. Join as editor/chair at an international conference.`});
+  if(raw.q1q2>0&&raw.q1q2<exp) S.push({t:'improve',i:'⚠️',tag:'Improve',tx:`<strong>Journals partially met:</strong> ${raw.q1q2}/${exp}. Need ${exp-raw.q1q2} more Q1/Q2 papers.`});
+  if(tot.conference>tot.journal*2) S.push({t:'improve',i:'⚖️',tag:'Improve',tx:`<strong>Imbalance:</strong> Too many conference papers vs journals. Journals = 2–4× more UGC weightage.`});
+  if(S.length===0) S.push({t:'info',i:'📝',tag:'Tip',tx:'Enter your academic outputs above to see personalized analysis.'});
+  document.getElementById('suggestions').innerHTML=S.slice(0,10).map(sg=>`
+    <div class="sug-item">
+      <div class="sug-ico ${sg.t}">${sg.i}</div>
+      <div class="sug-txt"><span class="sug-tag ${sg.t==='perfect'?'t-p':sg.t==='lagging'?'t-l':sg.t==='improve'?'t-w':'t-i'}">${sg.tag}</span>${sg.tx}</div>
+    </div>`).join('');
+}
+
+function showModal(id){
+  let f,fc; CATS.forEach(c=>{const it=c.items.find(x=>x.id===id);if(it){f=it;fc=c;}});
+  if(!f)return;
+  document.getElementById('m-ico').textContent=f.ico;
+  document.getElementById('m-title').textContent=f.title;
+  document.getElementById('m-pts').innerHTML=`+${f.pts} pts <span style="font-size:13px;font-weight:600;color:var(--ink3);">per item</span>`;
+  document.getElementById('m-rule').innerHTML=`<strong>Scoring Rule:</strong> ${f.rule}`;
+  document.getElementById('m-ugc').innerHTML=`<strong>UGC/AICTE Guideline:</strong> ${f.ugc}`;
+  document.getElementById('modalOv').classList.add('show');
+}
+function closeModal(){document.getElementById('modalOv').classList.remove('show');}
+document.getElementById('modalOv').addEventListener('click',e=>{if(e.target.id==='modalOv')closeModal();});
+function resetAll(){
+  Object.keys(counts).forEach(k=>counts[k]=0);
+  document.querySelectorAll('.cval').forEach(e=>e.textContent='0');
+  document.querySelectorAll('.pts-scored').forEach(e=>{e.textContent='0';e.className='pts-scored zero';});
+  recalc();
+}
+
+buildUI(); recalc();
+</script>
+</body>
+</html>
